@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -26,12 +26,12 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Run automated tests
-        run: python -m pytest -v --browser chromium
+        run: python -m pytest -v --browser chromium --screenshot=on --junitxml=test-results/results.xml
 
-      - name: Upload failure diagnostics
-        if: failure()
+      - name: Upload test results
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-failure
+          name: ui-test-results
           path: test-results/
           if-no-files-found: ignore

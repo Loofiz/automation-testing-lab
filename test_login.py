@@ -6,6 +6,7 @@ CART_URL = f"{BASE_URL}/cart.html"
 USERNAME = "standard_user"
 PASSWORD = "secret_sauce"
 PRODUCT_NAME = "Sauce Labs Backpack"
+PRODUCT_PRICE = "$29.99"
 
 
 def submit_login(page: Page, password: str = PASSWORD) -> None:
@@ -44,10 +45,11 @@ def test_add_product_to_cart(page: Page):
     expect(page.get_by_test_id("shopping-cart-badge")).to_have_text("1")
     page.get_by_test_id("shopping-cart-link").click()
     expect(page).to_have_url(CART_URL)
-    cart_item = page.get_by_test_id("inventory-item")
+    cart_item = page.get_by_test_id("cart-list").get_by_test_id("inventory-item")
     expect(cart_item).to_have_count(1)
     expect(cart_item.get_by_test_id("inventory-item-name")).to_have_text(PRODUCT_NAME)
     expect(cart_item.get_by_test_id("item-quantity")).to_have_text("1")
+    expect(cart_item.get_by_test_id("inventory-item-price")).to_have_text(PRODUCT_PRICE)
 
 
 def test_login_with_invalid_password(page: Page):
