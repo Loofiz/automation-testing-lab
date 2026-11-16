@@ -31,7 +31,7 @@ def test_login_page_is_displayed(page: Page):
 
 def test_successful_login(page: Page):
     submit_login(page)
-    expect(page).to_have_url(f"{BASE_URL}/incorrect.html")
+    expect(page).to_have_url(INVENTORY_URL)
     expect(page.get_by_test_id("inventory-container")).to_be_visible()
 
 
